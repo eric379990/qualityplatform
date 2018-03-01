@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="MongoConfiguration">
+    <option name="serverConfigurations">
+      <list>
+        <ServerConfiguration>
+          <option name="label" value="zxjt" />
+          <option name="password" value="zxjtPass" />
+          <option name="serverUrls">
+            <list>
+              <option value="10.237.3.81:3389" />
+            </list>
+          </option>
+          <option name="sshTunnelingConfiguration">
+            <SshTunnelingConfiguration />
+          </option>
+          <option name="userDatabase" value="zxjt" />
+          <option name="username" value="zxjtUser" />
+        </ServerConfiguration>
+      </list>
+    </option>
+  </component>
+</project>

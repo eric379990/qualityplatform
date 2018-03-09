@@ -1,25 +1,27 @@
 package com.csc.qualityplatform.web;
 
+import com.alibaba.fastjson.JSONObject;
 import com.csc.qualityplatform.service.TestDataService;
-import com.csc.qualityplatform.utils.MongoHandler;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBObject;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class TestDataController {
 
     @Autowired
     TestDataService testDataService;
 
-    @GetMapping("/getdata")
-    public List<Document> getAllTestData(@RequestParam("id") int id){
-        return testDataService.findTestDataByFunctionId(id);
+    @GetMapping("/getApiParameterDataInfo")
+    public List<JSONObject> getAllTestData(@RequestParam("id") int id){
+        return testDataService.getFormedTestDataByFunctionId(id);
+    }
+
+    @PostMapping("/saveApiDataInfo")
+    public String saveTestData(@RequestBody JSONObject data){
+        return testDataService.saveTestData(data);
     }
 }

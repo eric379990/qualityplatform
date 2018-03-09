@@ -1,11 +1,11 @@
 package com.csc.qualityplatform.web;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.csc.qualityplatform.entity.Function;
 import com.csc.qualityplatform.service.FunctionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class FunctionController {
 
     @Autowired
@@ -37,6 +38,7 @@ public class FunctionController {
              JSONObject item = new JSONObject();
              item.put("label", ((Function)o).getUrl());
              item.put("value", ((Function)o).getFunctionid());
+             item.put("description", ((Function)o).getDesc());
              data.add(item);
          }
          return data;

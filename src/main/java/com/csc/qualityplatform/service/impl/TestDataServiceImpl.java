@@ -8,7 +8,12 @@ import com.csc.qualityplatform.utils.MongoHandler;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.DeleteOptions;
+import com.mongodb.client.result.DeleteResult;
+import org.bson.BsonDocument;
+import org.bson.BsonObjectId;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,21 +38,42 @@ public class TestDataServiceImpl implements TestDataService {
     public String saveTestData(JSONObject data) {
         MongoCollection<Document> table = mongoDBConfig.mongoDatabase().getCollection("testdata");
         Document doc = new Document();
+        Document result = null;
+        Boolean isNewData = data.getBoolean("isNewData");
+        data.remove("isNewData");
+        String res = null;
         Iterator it = data.keySet().iterator();
         while (it.hasNext()){
             String key =(String) it.next();
+            if(!key.equalsIgnoreCase("functionid")) {
+                doc.put("functionid", Integer.parseInt(data.getString("functionid")));
+            }
             if(!key.equalsIgnoreCase("_id")) {
                 doc.put(key, data.get(key));
             }
         }
-        System.out.println("prekey:"+data.getString("_id"));
-        Document result = table.findOneAndReplace(new Document("_id", new ObjectId(data.getString("_id"))), doc);
-        System.out.println("key:"+((ObjectId)result.get("_id")).toHexString());
+        if(isNewData){
+            int id = Integer.parseInt(data.getString("functionid"));
+            doc.replace("functionid", id);
+            table.insertOne(doc);
+        }else{
+            result = table.findOneAndReplace(new Document("_id", new ObjectId(data.getString("_id"))), doc);
+        }
+
         if(result!=null&&result.containsKey("_id")){
             return "success";
         }else{
             return "failed";
         }
+    }
+
+    @Override
+    public Boolean deleteTestData(String id) {
+        MongoCollection<Document> table = mongoDBConfig.mongoDatabase().getCollection("testdata");
+        Document filter = new Document();
+        filter.put("_id", new  ObjectId(id));
+        DeleteResult fi = table.deleteOne(filter);
+        return fi.wasAcknowledged();
     }
 
 

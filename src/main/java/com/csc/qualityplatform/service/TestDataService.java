@@ -12,4 +12,6 @@ public interface TestDataService {
     List<JSONObject> getFormedTestDataByFunctionId(int id);
 
     String saveTestData(JSONObject data);
+
+    Boolean deleteTestData(String id);
 }

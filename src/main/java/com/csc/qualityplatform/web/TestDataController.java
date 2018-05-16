@@ -24,4 +24,9 @@ public class TestDataController {
     public String saveTestData(@RequestBody JSONObject data){
         return testDataService.saveTestData(data);
     }
+
+    @PostMapping("/deleteApiData")
+    public Boolean deleteApiData(@RequestBody JSONObject data){
+        return testDataService.deleteTestData(data.getString("id"));
+    }
 }
